@@ -11,5 +11,19 @@ services:
     # volumes:
     #   - ./data:/var/lib/mysql
     restart: always
+    networks:
+      - my_networks
     ports:
       - 3306:3306
+  
+  web:
+    build: ./web
+
+    networks:
+      - my_networks
+
+    depends_on:
+      - db
+
+networks:
+  my_networks:
