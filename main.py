@@ -11,9 +11,9 @@ connection = mariadb.connect(
     
 
 cursor = connection.cursor()
-# cursor.execute("CREATE TABLE users \
-#                (name varchar(25), \
-#                age INT)")
+cursor.execute("CREATE TABLE users \
+               (name varchar(25), \
+               age INT)")
 # Populate countries table  with some data
 cursor.execute("INSERT INTO users (name, age) VALUES ('Serg', '37');")
 connection.commit()

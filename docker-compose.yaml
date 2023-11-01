@@ -13,17 +13,29 @@ services:
     restart: always
     networks:
       - my_networks
-    ports:
-      - 3306:3306
+    healthcheck:
+        test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
+        timeout: 5s
+        retries: 3
+    # ports:
+    #   - 3306:3306
   
   web:
     build: ./web
-
+    environment:
+      HOST: db
+      PORT: 3306
+      DB: mydb
+      DB_USERNAME: myuser
+      DB_PASSWORD: mypassword
+    command: python scripts.py
     networks:
       - my_networks
 
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
 networks:
   my_networks:
+    name: my_networks
