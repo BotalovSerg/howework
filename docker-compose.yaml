@@ -17,8 +17,8 @@ services:
         test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
         timeout: 10s
         retries: 3
-    # ports:
-    #   - 3306:3306
+    ports:
+      - 3306:3306
   
   filler:
     build:
@@ -31,11 +31,12 @@ services:
       DB_PASSWORD: mypassword
     command: python scripts.py
     networks:
-      - my_networks
-
+      - my_networks    
     depends_on:
       db:
         condition: service_healthy
+    volumes:
+      - ./data.csv:/app/data.csv
 
 networks:
   my_networks:

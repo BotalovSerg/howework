@@ -1,11 +1,10 @@
 import os
 import mysql.connector as mariadb
 from mysql.connector import Error
-
+import csv
 
 
 print("Hello World")
-print(os.environ.get("DB_USERNAME"))
 
 try:
     connection = mariadb.connect(
@@ -18,3 +17,12 @@ try:
     connection.close()
 except Error as e:
     print(f"Error {e}")
+
+
+
+with open('data.csv') as f:
+    reader = csv.reader(f)
+    header = next(reader)
+    print('Headers :', header)
+    for row in reader:
+        print(row)
