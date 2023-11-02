@@ -15,13 +15,14 @@ services:
       - my_networks
     healthcheck:
         test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
-        timeout: 5s
+        timeout: 10s
         retries: 3
     # ports:
     #   - 3306:3306
   
-  web:
-    build: ./web
+  filler:
+    build:
+      context: ./filler
     environment:
       HOST: db
       PORT: 3306
