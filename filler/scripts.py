@@ -29,4 +29,11 @@ with open('data.csv') as f:
         cursor.execute("INSERT INTO users (name, age) VALUES (%s,%s)", row)
     connection.commit()
 
+    select_query = "SELECT * FROM users"
+    cursor.execute(select_query)
+    result = cursor.fetchall()
+
+    for q in result:
+        print(q)
+
 connection.close()
