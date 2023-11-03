@@ -14,7 +14,7 @@ try:
         host=os.environ.get("HOST"),
         port=os.environ.get("PORT"))
     print("Connect MariaDB")
-    connection.close()
+    # connection.close()
 except Error as e:
     print(f"Error {e}")
 
@@ -23,6 +23,10 @@ except Error as e:
 with open('data.csv') as f:
     reader = csv.reader(f)
     header = next(reader)
-    print('Headers :', header)
+    cursor = connection.cursor()
+    cursor.execute(f"CREATE TABLE users ({header[0]} varchar(25), {header[1]} INT)")
     for row in reader:
-        print(row)
+        cursor.execute("INSERT INTO users (name, age) VALUES (%s,%s)", row)
+    connection.commit()
+
+connection.close()
