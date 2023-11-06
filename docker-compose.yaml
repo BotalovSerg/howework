@@ -37,6 +37,17 @@ services:
         condition: service_healthy
     volumes:
       - ./data.csv:/app/data.csv
+  web:
+    build:
+      context: ./web
+    networks:
+      - my_networks    
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 5000:5000
+    command: python app.py
 
 networks:
   my_networks:
