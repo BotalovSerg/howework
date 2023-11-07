@@ -33,7 +33,9 @@ with open('data.csv') as f:
     cursor.execute(select_query)
     result = cursor.fetchall()
 
-    for q in result:
-        print(q)
+    print(result)
+
+    # for q in result:
+    #     print(q)
 
 connection.close()
