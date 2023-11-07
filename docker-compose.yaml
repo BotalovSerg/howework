@@ -41,10 +41,16 @@ services:
     build:
       context: ./web
     networks:
-      - my_networks    
+      - my_networks
+    environment:
+      HOST: db
+      PORT: 3306
+      DB: mydb
+      DB_USERNAME: myuser
+      DB_PASSWORD: mypassword    
     depends_on:
-      db:
-        condition: service_healthy
+      - db
+      - filler      
     ports:
       - 5000:5000
     command: python app.py
