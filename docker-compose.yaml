@@ -3,13 +3,13 @@ version: '3.8'
 services:
   db:
     image: mariadb
-    environment:
-      MYSQL_ROOT_PASSWORD: secret
-      MYSQL_DATABASE: mydb
-      MYSQL_USER: myuser
-      MYSQL_PASSWORD: mypassword
-    # volumes:
-    #   - ./data:/var/lib/mysql
+    env_file:
+      - .env
+    # environment:
+    #   MYSQL_ROOT_PASSWORD: secret
+    #   MYSQL_DATABASE: mydb
+    #   MYSQL_USER: myuser
+    #   MYSQL_PASSWORD: mypassword
     restart: always
     networks:
       - my_networks
@@ -17,18 +17,20 @@ services:
         test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
         timeout: 10s
         retries: 3
-    ports:
-      - 3306:3306
+    # ports:
+    #   - 3306:3306
   
   filler:
     build:
       context: ./filler
-    environment:
-      HOST: db
-      PORT: 3306
-      DB: mydb
-      DB_USERNAME: myuser
-      DB_PASSWORD: mypassword
+    env_file:
+      - .env
+    # environment:
+    #   HOST: db
+    #   PORT: 3306
+    #   DB: mydb
+    #   DB_USERNAME: myuser
+    #   DB_PASSWORD: mypassword
     command: python scripts.py
     networks:
       - my_networks    
@@ -37,22 +39,19 @@ services:
         condition: service_healthy
     volumes:
       - ./data.csv:/app/data.csv
+
   web:
     build:
       context: ./web
     networks:
       - my_networks
-    environment:
-      HOST: db
-      PORT: 3306
-      DB: mydb
-      DB_USERNAME: myuser
-      DB_PASSWORD: mypassword    
+    env_file:
+      - .env
     depends_on:
       - db
       - filler      
     ports:
-      - 5000:5000
+      - 8000:8000
     command: python app.py
 
 networks:

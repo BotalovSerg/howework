@@ -3,9 +3,6 @@ import mysql.connector as mariadb
 from mysql.connector import Error
 import csv
 
-
-print("Hello World")
-
 try:
     connection = mariadb.connect(
         user=os.environ.get("DB_USERNAME"),

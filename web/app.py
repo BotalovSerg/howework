@@ -18,25 +18,22 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def status_ok():
-    return "<h1>Hello, Flask</h1>"
+def db_ok():
+    json_data = []
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM users")
+    row_headers=[x[0] for x in cursor.description] 
+    for result in cursor:
+        json_data.append(dict(zip(row_headers,result)))
+    connection.close()
+    return json_data
 
 
 @app.route('/health')
 def health():
     return {"status": "OK"}
 
-@app.route('/db')
-def db_ok():
-    json_data = []
-    cursor = connection.cursor()
-    cursor.execute("SELECT * FROM users")
-    # result = cursor.fetchall()
-    # connection.close()
-    row_headers=[x[0] for x in cursor.description] 
-    for result in cursor:
-        json_data.append(dict(zip(row_headers,result)))
-    return json_data
+
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port='8000')
